@@ -1,0 +1,34 @@
+{
+  "generator-jhipster": {
+    "promptValues": {
+      "packageName": "com.synectiks.attendance"
+    },
+    "jhipsterVersion": "5.8.2",
+    "applicationType": "microservice",
+    "baseName": "Attendance",
+    "packageName": "com.synectiks.attendance",
+    "packageFolder": "com/synectiks/attendance",
+    "serverPort": "9099",
+    "authenticationType": "jwt",
+    "cacheProvider": "no",
+    "websocket": false,
+    "databaseType": "sql",
+    "devDatabaseType": "postgresql",
+    "prodDatabaseType": "postgresql",
+    "searchEngine": false,
+    "messageBroker": false,
+    "serviceDiscoveryType": false,
+    "buildTool": "maven",
+    "enableSwaggerCodegen": false,
+    "jwtSecretKey": "NjdmMGQ5Nzc3NGFhYmVkZjA3NGEwOTU0YjAwZjA5YmIwYTY1OWMyYTMyMzdmMmRmNjVmNDM5ZGFhOWRjNTAyMTRmZWUwNGU3MDAzMzAxNDdhZWY0NWM0MmE5ZTFjYzJlMTY2ZTVjMTE4YWNkODA5MmRjNzdmOGZkMmRhMDJmN2Y=",
+    "testFrameworks": [],
+    "jhiPrefix": "jhi",
+    "entitySuffix": "",
+    "dtoSuffix": "DTO",
+    "otherModules": [],
+    "enableTranslation": false,
+    "clientPackageManager": "npm",
+    "skipClient": true,
+    "skipUserManagement": true
+  }
+}
