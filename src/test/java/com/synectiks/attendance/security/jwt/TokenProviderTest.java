@@ -2,6 +2,7 @@ package com.synectiks.attendance.security.jwt;
 
 import com.synectiks.attendance.security.AuthoritiesConstants;
 
+import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.*;
 
@@ -17,15 +18,14 @@ import org.springframework.test.util.ReflectionTestUtils;
 import io.github.jhipster.config.JHipsterProperties;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.io.Decoders;
-import io.jsonwebtoken.security.Keys;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class TokenProviderTest {
 
+    private final Base64.Encoder encoder = Base64.getEncoder();
     private final long ONE_MINUTE = 60000;
-    private Key key;
+    private String secretKey;
     private JHipsterProperties jHipsterProperties;
     private TokenProvider tokenProvider;
 
@@ -33,10 +33,8 @@ public class TokenProviderTest {
     public void setup() {
         jHipsterProperties = Mockito.mock(JHipsterProperties.class);
         tokenProvider = new TokenProvider(jHipsterProperties);
-        key = Keys.hmacShaKeyFor(Decoders.BASE64
-            .decode("fd54a45s65fds737b9aafcb3412e07ed99b267f33413274720ddbb7f6c5e64e9f14075f2d7ed041592f0b7657baf8"));
-
-        ReflectionTestUtils.setField(tokenProvider, "key", key);
+        secretKey = encoder.encodeToString("e5c9ee274ae87bc031adda32e27fa98b9290da83".getBytes(StandardCharsets.UTF_8));
+        ReflectionTestUtils.setField(tokenProvider, "secretKey", secretKey);
         ReflectionTestUtils.setField(tokenProvider, "tokenValidityInMilliseconds", ONE_MINUTE);
     }
 
@@ -94,17 +92,14 @@ public class TokenProviderTest {
     private String createUnsupportedToken() {
         return Jwts.builder()
             .setPayload("payload")
-            .signWith(key, SignatureAlgorithm.HS512)
+            .signWith(SignatureAlgorithm.HS512, secretKey)
             .compact();
     }
 
     private String createTokenWithDifferentSignature() {
-        Key otherKey = Keys.hmacShaKeyFor(Decoders.BASE64
-            .decode("Xfd54a45s65fds737b9aafcb3412e07ed99b267f33413274720ddbb7f6c5e64e9f14075f2d7ed041592f0b7657baf8"));
-
         return Jwts.builder()
             .setSubject("anonymous")
-            .signWith(otherKey, SignatureAlgorithm.HS512)
+            .signWith(SignatureAlgorithm.HS512, "e5c9ee274ae87bc031adda32e27fa98b9290da90")
             .setExpiration(new Date(new Date().getTime() + ONE_MINUTE))
             .compact();
     }

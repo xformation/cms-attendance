@@ -1,0 +1,32 @@
+{
+    "name": "StudentAttendance",
+    "fields": [
+        {
+            "fieldName": "attendanceStatus",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "comments",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "lectureId",
+            "fieldType": "Long"
+        },
+        {
+            "fieldName": "studentId",
+            "fieldType": "Long"
+        }
+    ],
+    "relationships": [],
+    "changelogDate": "20200625110121",
+    "entityTableName": "student_attendance",
+    "dto": "mapstruct",
+    "pagination": "no",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "Attendance",
+    "applications": "*",
+    "microserviceName": "Attendance"
+}

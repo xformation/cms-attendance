@@ -1,0 +1,12 @@
+
+entity StudentAttendance{
+	attendanceStatus String
+	comments String
+	lectureId Long
+	studentId Long
+}
+
+dto * with mapstruct
+service all with serviceImpl
+
+
