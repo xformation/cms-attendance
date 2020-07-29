@@ -27,5 +27,12 @@ public class Section implements Serializable {
 		this.batch = batch;
 	}
 
-
+    @Override
+    public String toString() {
+        return "Section{" +
+            "id=" + id +
+            ", section='" + section + '\'' +
+            ", batch=" + batch +
+            '}';
+    }
 }

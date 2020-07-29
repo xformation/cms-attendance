@@ -404,9 +404,9 @@ public class CommonService {
         return list;
     }
 
-    public List<Student> getAllStudents(Branch branch, Department department, Batch batch, Section section) {
+    public List<Student> getAllStudents(Long branchId, Long departmentId, Long batchId, Long sectionId) {
         logger.debug("Getting all Students ");
-        String stUrl = applicationProperties.getStdSrvUrl()+"/api/student-by-filters?batchId="+branch.getId()+"&departmentId="+department.getId()+"&batchId="+batch.getId()+"&sectionId="+section.getId();
+        String stUrl = applicationProperties.getStdSrvUrl()+"/api/student-by-filters?branchId="+branchId+"&departmentId="+departmentId+"&batchId="+batchId+"&sectionId="+sectionId;
         Student[] temp = this.restTemplate.getForObject(stUrl, Student[].class);
         if(temp.length == 0) {
             return Collections.emptyList();

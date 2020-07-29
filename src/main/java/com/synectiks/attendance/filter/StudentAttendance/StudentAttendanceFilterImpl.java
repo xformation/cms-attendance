@@ -90,7 +90,7 @@ public class StudentAttendanceFilterImpl  {
         AttendanceMaster am = this.commonService.getAttendanceMasterByBatchSectionTeach(batch, section, teach);
 
         List<StudentAttendanceVo> voList = new ArrayList<>();
-        List<Student> studentList = this.commonService.getAllStudents(branch, department, batch, section);
+        List<Student> studentList = this.commonService.getAllStudents(branch.getId(), department.getId(), batch.getId(), section.getId());
 
         Lecture currentDateLecture = lectureScheduleStatus(filter, am, 0);
         Lecture oneDayPrevLecture = lectureScheduleStatus(filter, am, 1);
@@ -119,19 +119,8 @@ public class StudentAttendanceFilterImpl  {
         Department department = this.commonService.getDepartmentById(Long.parseLong(filter.getDepartmentId())); // new Department();
         Batch batch = this.commonService.getBatchById(Long.parseLong(filter.getBatchId())); //new Batch();
         Section section = this.commonService.getSectionById(Long.parseLong(filter.getSectionId())); //new Section();
-
-//      Branch branch = new Branch();
-//      branch.setId(Long.valueOf(filter.getBranchId()));
-//    	Department department = new Department();
-//    	department.setId(Long.valueOf(filter.getDepartmentId()));
-//    	Batch batch = new Batch();
-//    	batch.setId(Long.valueOf(filter.getBatchId()));
-//    	Section section = new Section();
-//    	section.setId(Long.valueOf(filter.getSectionId()));
-
         List<StudentAttendanceVo> voList = new ArrayList<>();
-        List<Student> studentList = this.commonService.getAllStudents(branch, department, batch, section);
-
+        List<Student> studentList = this.commonService.getAllStudents(branch.getId(), department.getId(), batch.getId(), section.getId());
         Lecture lecture = lectureScheduleStatus(filter);
 
         // lecture schedule on current date insert/update all the students in student_attendance table.

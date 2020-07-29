@@ -27,4 +27,13 @@ public class Batch implements Serializable {
 		this.department = department;
 	}
 
+
+    @Override
+    public String toString() {
+        return "Batch{" +
+            "id=" + id +
+            ", batch='" + batch + '\'' +
+            ", department=" + department +
+            '}';
+    }
 }

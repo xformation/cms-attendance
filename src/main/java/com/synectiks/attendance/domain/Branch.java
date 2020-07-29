@@ -1,6 +1,7 @@
 package com.synectiks.attendance.domain;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.Objects;
 
 public class Branch implements Serializable {
 
@@ -140,5 +141,59 @@ public class Branch implements Serializable {
 		this.state = state;
 	}
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Branch branch = (Branch) o;
+        return Objects.equals(id, branch.id) &&
+            Objects.equals(branchName, branch.branchName) &&
+            Objects.equals(address, branch.address) &&
+            Objects.equals(pinCode, branch.pinCode) &&
+            Objects.equals(branchHead, branch.branchHead) &&
+            Objects.equals(cellPhoneNo, branch.cellPhoneNo) &&
+            Objects.equals(landLinePhoneNo, branch.landLinePhoneNo) &&
+            Objects.equals(emailId, branch.emailId) &&
+            Objects.equals(faxNo, branch.faxNo) &&
+            Objects.equals(isMainBranch, branch.isMainBranch) &&
+            Objects.equals(startDate, branch.startDate) &&
+            Objects.equals(createdBy, branch.createdBy) &&
+            Objects.equals(createdOn, branch.createdOn) &&
+            Objects.equals(updatedBy, branch.updatedBy) &&
+            Objects.equals(updatedOn, branch.updatedOn) &&
+            Objects.equals(status, branch.status) &&
+            Objects.equals(college, branch.college) &&
+            Objects.equals(city, branch.city) &&
+            Objects.equals(state, branch.state);
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, branchName, address, pinCode, branchHead, cellPhoneNo, landLinePhoneNo, emailId, faxNo, isMainBranch, startDate, createdBy, createdOn, updatedBy, updatedOn, status, college, city, state);
+    }
+
+    @Override
+    public String toString() {
+        return "Branch{" +
+            "id=" + id +
+            ", branchName='" + branchName + '\'' +
+            ", address='" + address + '\'' +
+            ", pinCode='" + pinCode + '\'' +
+            ", branchHead='" + branchHead + '\'' +
+            ", cellPhoneNo='" + cellPhoneNo + '\'' +
+            ", landLinePhoneNo='" + landLinePhoneNo + '\'' +
+            ", emailId='" + emailId + '\'' +
+            ", faxNo='" + faxNo + '\'' +
+            ", isMainBranch='" + isMainBranch + '\'' +
+            ", startDate=" + startDate +
+            ", createdBy='" + createdBy + '\'' +
+            ", createdOn=" + createdOn +
+            ", updatedBy='" + updatedBy + '\'' +
+            ", updatedOn=" + updatedOn +
+            ", status='" + status + '\'' +
+            ", college=" + college +
+            ", city=" + city +
+            ", state=" + state +
+            '}';
+    }
 }
