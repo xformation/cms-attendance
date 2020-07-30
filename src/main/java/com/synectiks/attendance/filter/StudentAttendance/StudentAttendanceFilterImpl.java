@@ -1,12 +1,17 @@
 package com.synectiks.attendance.filter.StudentAttendance;
 
-import java.math.BigInteger;
-import java.text.ParseException;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import com.synectiks.attendance.business.service.CommonService;
+import com.synectiks.attendance.constant.CmsConstants;
+import com.synectiks.attendance.domain.*;
+import com.synectiks.attendance.domain.vo.StudentAttendanceVo;
+import com.synectiks.attendance.repository.StudentAttendanceRepository;
+import com.synectiks.attendance.service.util.DateFormatUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -15,31 +20,12 @@ import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-
-import com.synectiks.attendance.domain.vo.StudentAttendanceVo;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Example;
-import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
-
-import com.synectiks.attendance.business.service.CommonService;
-import com.synectiks.attendance.constant.CmsConstants;
-import com.synectiks.attendance.domain.AttendanceMaster;
-import com.synectiks.attendance.domain.Batch;
-import com.synectiks.attendance.domain.Branch;
-import com.synectiks.attendance.domain.Department;
-import com.synectiks.attendance.domain.Lecture;
-import com.synectiks.attendance.domain.QueryResult;
-import com.synectiks.attendance.domain.Section;
-import com.synectiks.attendance.domain.Student;
-import com.synectiks.attendance.domain.StudentAttendance;
-import com.synectiks.attendance.domain.Teach;
-import com.synectiks.attendance.domain.Teacher;
-import com.synectiks.attendance.repository.StudentAttendanceRepository;
-
-import com.synectiks.attendance.service.util.DateFormatUtil;
+import java.math.BigInteger;
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
 
 
 @Repository
@@ -60,7 +46,6 @@ public class StudentAttendanceFilterImpl  {
 
     @PersistenceContext
     private EntityManager entityManager;
-
 
     /**
      * Student attendance data for a teacher role end user
@@ -90,7 +75,7 @@ public class StudentAttendanceFilterImpl  {
         AttendanceMaster am = this.commonService.getAttendanceMasterByBatchSectionTeach(batch, section, teach);
 
         List<StudentAttendanceVo> voList = new ArrayList<>();
-        List<Student> studentList = this.commonService.getAllStudents(branch.getId(), department.getId(), batch.getId(), section.getId());
+        List<Student> studentList = this.commonService.getAllStudents(branch, department, batch, section);
 
         Lecture currentDateLecture = lectureScheduleStatus(filter, am, 0);
         Lecture oneDayPrevLecture = lectureScheduleStatus(filter, am, 1);
@@ -119,8 +104,19 @@ public class StudentAttendanceFilterImpl  {
         Department department = this.commonService.getDepartmentById(Long.parseLong(filter.getDepartmentId())); // new Department();
         Batch batch = this.commonService.getBatchById(Long.parseLong(filter.getBatchId())); //new Batch();
         Section section = this.commonService.getSectionById(Long.parseLong(filter.getSectionId())); //new Section();
+
+//      Branch branch = new Branch();
+//      branch.setId(Long.valueOf(filter.getBranchId()));
+//    	Department department = new Department();
+//    	department.setId(Long.valueOf(filter.getDepartmentId()));
+//    	Batch batch = new Batch();
+//    	batch.setId(Long.valueOf(filter.getBatchId()));
+//    	Section section = new Section();
+//    	section.setId(Long.valueOf(filter.getSectionId()));
+
         List<StudentAttendanceVo> voList = new ArrayList<>();
-        List<Student> studentList = this.commonService.getAllStudents(branch.getId(), department.getId(), batch.getId(), section.getId());
+        List<Student> studentList = this.commonService.getAllStudents(branch, department, batch, section);
+
         Lecture lecture = lectureScheduleStatus(filter);
 
         // lecture schedule on current date insert/update all the students in student_attendance table.
@@ -181,7 +177,7 @@ public class StudentAttendanceFilterImpl  {
 //        		StudentAttendance sa = getStudentAttendance(st, currentDateLecture);
                 StudentAttendance sa = null;
                 for(StudentAttendance saa: saList) {
-                    if(st.getId().compareTo(saa.getStudentId()) == 0) {
+                    if(this.commonService.getStudentById(st.getId()).getId().compareTo(saa.getStudentId()) == 0) {
                         sa = saa;
                         break;
                     }
@@ -197,7 +193,7 @@ public class StudentAttendanceFilterImpl  {
                     sa = new StudentAttendance();
 //					sa.setLecture(currentDateLecture);
                     sa.setLectureId(currentDateLecture.getId());
-                    sa.setStudentId(sa.getStudentId());
+                    sa.setStudentId(st.getId());
                     sa.setAttendanceStatus("PRESENT");
                     insList.add(sa);
 //					sa = this.studentAttendanceRepository.save(sa);
@@ -328,8 +324,8 @@ public class StudentAttendanceFilterImpl  {
             sa.setComments((String)result[2]);
             Student student = new Student();
             student.setId(((BigInteger)result[3]).longValue());
-//            sa.setStudent(student);
-//            sa.setLecture(lecture);
+            sa.setStudentId(student.getId());
+            sa.setLectureId(student.getId());
             saList.add(sa);
         }
 
