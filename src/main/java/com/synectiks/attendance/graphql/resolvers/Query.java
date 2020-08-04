@@ -41,7 +41,7 @@ public class Query implements GraphQLQueryResolver {
         StudentAttendanceCache cache = new StudentAttendanceCache();
         if(branchId == null || "null".equalsIgnoreCase(branchId) || "undefined".equalsIgnoreCase(branchId)
             || academicYearId == null || "null".equalsIgnoreCase(academicYearId) || "undefined".equalsIgnoreCase(academicYearId)
-            || teacherId == null || "null".equalsIgnoreCase(teacherId) || "undefined".equalsIgnoreCase(teacherId)) {
+           ) {
 
             logger.warn("Either branch/academic year or teacher id is null. Return empty cache");
 //    		cache.setDepartments(new ArrayList<Department>());
@@ -49,7 +49,6 @@ public class Query implements GraphQLQueryResolver {
             cache.setSubjects(new ArrayList<Subject>());
             cache.setSections(new ArrayList<Section>());
             cache.setLectures(new ArrayList<CmsLectureVo>());
-//            cache.setSemesters(new ArrayList<CmsSemesterVo>());
             cache.setTerms(new ArrayList<CmsTermVo>());
             cache.setAttendanceMasters(new ArrayList<AttendanceMaster>());
             return cache;
@@ -63,14 +62,13 @@ public class Query implements GraphQLQueryResolver {
         Teacher thr = this.commonService.getTeacherByEmail(teacherId);
         Long tid = (thr != null) ? thr.getId() : 0;
 
-        if(Long.parseLong(branchId) == 0 || Long.parseLong(academicYearId) == 0 || tid == 0) {
+        if(Long.parseLong(branchId) == 0 || Long.parseLong(academicYearId) == 0)  {
             logger.warn("Either branch/academic year or teacher id is not provided. Return empty cache");
 //    		cache.setDepartments(new ArrayList<Department>());
             cache.setBatches(new ArrayList<Batch>());
             cache.setSubjects(new ArrayList<Subject>());
             cache.setSections(new ArrayList<Section>());
             cache.setLectures(new ArrayList<CmsLectureVo>());
-//            cache.setSemesters(new ArrayList<CmsSemesterVo>());
             cache.setTerms(new ArrayList<CmsTermVo>());
             cache.setAttendanceMasters(new ArrayList<AttendanceMaster>());
             cache.setTeaches(new ArrayList<Teach>());
@@ -108,14 +106,12 @@ public class Query implements GraphQLQueryResolver {
 
         List<CmsLectureVo> cmsLec = this.commonService.getAllCurrentDateCmsLectureForTeacher(tid, lectureDate);
 
-//        List<CmsSemesterVo> sem = this.commonService.getAllCmsSemesters();
 
 //    	cache.setDepartments(dept);
         cache.setBatches(batchList);
         cache.setSubjects(selectedSubjectList);
         cache.setSections(sectionList);
         cache.setLectures(cmsLec);
-//        cache.setSemesters(sem);
         cache.setTeaches(teachList);
         cache.setAttendanceMasters(attendanceMasterList);
         return cache;
